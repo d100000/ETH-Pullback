@@ -2,6 +2,10 @@
 
 一个基于Bitget API的实时加密货币交易数据展示网站，提供ETH/USDT的实时价格、K线图和多种技术分析指标。
 
+## 界面截图
+<img width="1912" height="3009" alt="127 0 0 1_5001__2025_08_27_00_07_16" src="https://github.com/user-attachments/assets/e4a83916-4734-4602-bc62-1b1c06e8ed2c" />
+
+
 ## 🌟 功能特性
 
 ### 📊 实时数据展示
