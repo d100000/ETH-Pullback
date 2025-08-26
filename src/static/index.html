@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ETH实时交易数据展示</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 头部区域 -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title">
+                    <i class="fas fa-chart-line"></i>
+                    ETH实时交易数据展示
+                </h1>
+                <div class="status-indicator">
+                    <span class="status-dot" id="statusDot"></span>
+                    <span class="status-text" id="statusText">连接中...</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- 价格信息区域 -->
+        <section class="price-section">
+            <div class="price-card">
+                <div class="price-info">
+                    <div class="current-price">
+                        <span class="price-label">当前价格</span>
+                        <span class="price-value" id="currentPrice">--</span>
+                        <span class="price-currency">USDT</span>
+                    </div>
+                    <div class="price-change" id="priceChange">
+                        <span class="change-value">--</span>
+                        <span class="change-percent">--</span>
+                    </div>
+                </div>
+                <div class="last-update">
+                    <i class="fas fa-clock"></i>
+                    <span id="lastUpdate">--</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 估值展示区域 -->
+        <section class="valuation-section">
+            <h2 class="section-title">
+                <i class="fas fa-calculator"></i>
+                技术分析估值
+            </h2>
+            
+            <div class="valuation-grid">
+                <!-- 移动平均线 -->
+                <div class="valuation-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-chart-area"></i>
+                        移动平均线
+                    </h3>
+                    <div class="ma-levels" id="maLevels">
+                        <!-- 动态生成移动平均线数据 -->
+                    </div>
+                </div>
+
+                <!-- 斐波那契回撤 -->
+                <div class="valuation-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-wave-square"></i>
+                        斐波那契回撤与扩展
+                    </h3>
+                    <div class="fib-levels" id="fibLevels">
+                        <!-- 动态生成斐波那契数据 -->
+                    </div>
+                </div>
+
+                <!-- 枢轴点 -->
+                <div class="valuation-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-crosshairs"></i>
+                        枢轴点
+                    </h3>
+                    <div class="pivot-levels" id="pivotLevels">
+                        <!-- 动态生成枢轴点数据 -->
+                    </div>
+                </div>
+
+                <!-- 趋势线 -->
+                <div class="valuation-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-trending-up"></i>
+                        趋势线
+                    </h3>
+                    <div class="trend-levels" id="trendLevels">
+                        <!-- 动态生成趋势线数据 -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- K线图区域 -->
+        <section class="chart-section">
+            <h2 class="section-title">
+                <i class="fas fa-chart-candlestick"></i>
+                实时K线图
+            </h2>
+            <div class="chart-container">
+                <div class="chart-controls">
+                    <div class="time-selector">
+                        <button class="time-btn active" data-period="1m">1分钟</button>
+                        <button class="time-btn" data-period="5m">5分钟</button>
+                        <button class="time-btn" data-period="15m">15分钟</button>
+                        <button class="time-btn" data-period="1H">1小时</button>
+                        <button class="time-btn" data-period="1D">1天</button>
+                    </div>
+                    <div class="chart-options">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="showMA" checked>
+                            <span class="checkmark"></span>
+                            显示移动平均线
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="showFib" checked>
+                            <span class="checkmark"></span>
+                            显示斐波那契
+                        </label>
+                    </div>
+                </div>
+                <div class="chart-wrapper">
+                    <div id="candlestickChart" class="chart"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 支撑阻力位区域 -->
+        <section class="support-resistance-section">
+            <h2 class="section-title">
+                <i class="fas fa-layer-group"></i>
+                支撑阻力位分析
+            </h2>
+            <div class="sr-grid">
+                <div class="sr-card resistance">
+                    <h3 class="sr-title">
+                        <i class="fas fa-arrow-up"></i>
+                        阻力位
+                    </h3>
+                    <div class="sr-levels" id="resistanceLevels">
+                        <!-- 动态生成阻力位数据 -->
+                    </div>
+                </div>
+                <div class="sr-card support">
+                    <h3 class="sr-title">
+                        <i class="fas fa-arrow-down"></i>
+                        支撑位
+                    </h3>
+                    <div class="sr-levels" id="supportLevels">
+                        <!-- 动态生成支撑位数据 -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 优化价位区域 -->
+        <section class="optimized-section">
+            <h2 class="section-title">
+                <i class="fas fa-magic"></i>
+                优化价位分析
+            </h2>
+            <div class="optimized-grid">
+                <div class="optimized-card">
+                    <h3 class="card-title">心理价位</h3>
+                    <div class="optimized-levels" id="psychologicalLevels">
+                        <!-- 动态生成心理价位数据 -->
+                    </div>
+                </div>
+                <div class="optimized-card">
+                    <h3 class="card-title">整数价位</h3>
+                    <div class="optimized-levels" id="roundNumberLevels">
+                        <!-- 动态生成整数价位数据 -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- 加载指示器 -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <span>加载数据中...</span>
+        </div>
+    </div>
+
+    <!-- 错误提示 -->
+    <div class="error-toast" id="errorToast">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span id="errorMessage">发生错误</span>
+        <button class="close-btn" onclick="hideError()">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
